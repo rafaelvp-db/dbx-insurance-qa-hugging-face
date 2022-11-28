@@ -1,14 +1,21 @@
 # Databricks notebook source
+!rm -rf /dbfs/tmp/word2vec-get-started
+%cd /tmp
 !git clone https://github.com/hailiang-wang/word2vec-get-started.git
-!mv /databricks/driver/word2vec-get-started/corpus/insuranceqa/questions /dbfs/tmp/questions
+!mv /tmp/word2vec-get-started/corpus /dbfs/tmp/word2vec-get-started
+
+# COMMAND ----------
+
+dbfs_path = "/dbfs/tmp/word2vec-get-started/insuranceqa/questions"
+!ls -all {dbfs_path}
 
 # COMMAND ----------
 
 from pyspark.sql.functions import lower, regexp_replace, col
 
 def ingest_data(
-  path = "/tmp/questions/train.questions.txt",
-  output_table = "insuranceqa.train"
+  path,
+  output_table
 ):
 
   spark.sql("create database if not exists insuranceqa")
@@ -41,9 +48,9 @@ def pipeline(path, output_table):
   df = clean(df)
   df.write.saveAsTable(output_table)
 
-pipeline("/tmp/questions/test.questions.txt", "insuranceqa.train")
-pipeline("/tmp/questions/test.questions.txt", "insuranceqa.test")
-pipeline("/tmp/questions/test.questions.txt", "insuranceqa.valid")
+pipeline(f"{dbfs_path.replace('/dbfs', '')}/train.questions.txt", "insuranceqa.train")
+pipeline(f"{dbfs_path.replace('/dbfs', '')}/test.questions.txt", "insuranceqa.test")
+pipeline(f"{dbfs_path.replace('/dbfs', '')}/valid.questions.txt", "insuranceqa.valid")
 
 # COMMAND ----------
 
@@ -53,4 +60,12 @@ pipeline("/tmp/questions/test.questions.txt", "insuranceqa.valid")
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC 
+# MAGIC select * from insuranceqa.test limit 10
 
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC 
+# MAGIC select * from insuranceqa.valid limit 10
