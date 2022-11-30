@@ -315,10 +315,6 @@ def predict(question = "how do i get car insurance?", ground_truth = "auto-insur
 
 # COMMAND ----------
 
-sample["question_en"].values
-
-# COMMAND ----------
-
 # DBTITLE 1,Testing our model
 for i in range(0, 10):
   sample = test_data.df.sample(1)
