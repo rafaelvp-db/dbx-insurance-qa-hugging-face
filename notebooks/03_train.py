@@ -332,4 +332,45 @@ for i in range(0, 10):
 
 # COMMAND ----------
 
+# DBTITLE 1,Logging our Artifact and Registering our Model
+with mlflow.start_run(run_id = run.info.run_id) as run:
+
+  mlflow.pytorch.log_model(
+    lit_model,
+    artifact_path = "model",
+    registered_model_name = "distilbert_en_uncased_insuranceqa"
+  )
+
+# COMMAND ----------
+
+class_mappings = {}
+
+for key in training_data.class_mappings.keys():
+  class_mappings[key] = training_data.class_mappings[key]
+
+class_mappings
+
+# COMMAND ----------
+
+# DBTITLE 1,A bit of free form testing with unseen data
+test_questions = {
+  "my car broke, what should I do?": 1,
+  "my mother is sick, what should I do?": 4,
+  "can I talk about my pension?": 11,
+  "I've been deemed incapacitated for work, how do I make a claim?": 3,
+  "my wife wants to know what's in our life policy": 6,
+  "can I ask a question on medicare?": 8,
+  "what's the coverage for medicare?": 8,
+  "which retirement plans you have?": 11,
+  "how you invest money for retirement plan?": 11,
+  "I'm 60, what's my health premium?": 4
+}
+
+for question, topic in test_questions.items():
+
+  pred = predict(question, topic)
+  print(f"Question: {question}")
+  print(f"Prediction: {pred}")
+  print(f"Predicted '{topic}'? {pred == topic}")
+  print(f"------------------------------------------------------------------")
 
