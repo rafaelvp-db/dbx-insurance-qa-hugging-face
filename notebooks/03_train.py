@@ -348,7 +348,7 @@ class_mappings
 
 # COMMAND ----------
 
-# DBTITLE 1,A bit of free form testing with unseen data
+# DBTITLE 1,A bit of free form testing with (completely) unseen data
 test_questions = {
   "my car broke, what should I do?": 1,
   "my mother is sick, what should I do?": 4,
