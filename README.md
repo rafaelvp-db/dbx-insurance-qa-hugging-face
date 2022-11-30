@@ -1,4 +1,4 @@
-# Insurance QA Intent Classification with Databricks & Hugging Face
+# Insurance Q&A Intent Classification with Databricks & Hugging Face
 
 **TLDR;** this repo contains code that showcases the process of:
 * Ingesting data related to Insurance questions and answers ([Insurance QA Dataset](https://github.com/shuzi/insuranceQA)) into Delta Lake
