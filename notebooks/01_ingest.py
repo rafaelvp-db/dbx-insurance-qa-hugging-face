@@ -1,4 +1,15 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC 
+# MAGIC ## Insurance Q&A Intent Classification with Databricks & Hugging Face
+# MAGIC ### Data Ingestion
+# MAGIC 
+# MAGIC <hr />
+# MAGIC 
+# MAGIC <img src="https://raw.githubusercontent.com/rafaelvp-db/dbx-insurance-qa-hugging-face/master/img/header.png" width="800px"/>
+
+# COMMAND ----------
+
 !rm -rf /dbfs/tmp/word2vec-get-started
 %cd /tmp
 !git clone https://github.com/hailiang-wang/word2vec-get-started.git
