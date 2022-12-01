@@ -7,6 +7,7 @@ from transformers import AutoTokenizer
 class InsuranceDataset(Dataset):
     def __init__(
         self,
+        spark,
         database_name = "insuranceqa",
         split = "train",
         input_col = "question_en",

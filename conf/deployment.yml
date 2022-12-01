@@ -16,7 +16,7 @@ environments:
       #######################################################################################
       #   Example workflow for integration tests                                            #
       #######################################################################################
-      - name: "insuranceqa-sample-tests"
+      - name: "insuranceqa-tests"
         tasks:
           - task_key: "main"
             <<: *basic-static-cluster
@@ -27,7 +27,7 @@ environments:
       #######################################################################################
       # this is an example job with single ETL task based on 2.1 API and wheel_task format #
       ######################################################################################
-      - name: "insuranceqa-sample-etl"
+      - name: "insuranceqa-etl"
         tasks:
           - task_key: "main"
             <<: *basic-static-cluster

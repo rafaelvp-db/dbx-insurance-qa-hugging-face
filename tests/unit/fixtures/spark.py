@@ -2,9 +2,9 @@ import pytest
 from pyspark.sql import SparkSession
 
 
-@pytest.fixture
+@pytest.fixture(scope = "session")
 def spark():
     """PySpark session fixture."""
+
     spark = SparkSession.builder.getOrCreate()
-    yield spark
-    spark.stop()
+    return spark

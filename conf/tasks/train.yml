@@ -1,2 +1,13 @@
 hyperparameters:
   learning_rate: 1e-6
+accelerator: "gpu"
+devices: 4
+max_epochs: 10000
+num_workers: 12
+batch_size: 32
+input:
+  suffix: "silver"
+  train: "train"
+  test: "test"
+  valid: "valid"
+tracking_uri: "databricks"

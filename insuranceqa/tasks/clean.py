@@ -11,6 +11,7 @@ class CleaningTask(Task):
             remove_outliers(
                 self.spark,
                 database_name = db,
+                split = split,
                 suffix = suffix,
                 filter = filter
             )

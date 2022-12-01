@@ -48,11 +48,9 @@ class InsuranceQA:
     def ingest(
         self,
         database_name: str = "insuranceqa",
-        split: str = "train"
+        split: str = "train",
+        mode: str = "overwrite"
     ):
-
-        self.spark.sql(f"create database if not exists {database_name}")
-        self.spark.sql(f"drop table if exists {split}")
 
         path = f"{self.output_dir}/{self.subfolder_path}/{split}.questions.txt"
         df = self.spark.read.csv(
@@ -75,8 +73,9 @@ class InsuranceQA:
                 "topic_en",
                 "question_en"
             )
-            .write
-            .saveAsTable(target_table)
         )
+
+        self.spark.sql(f"create database if not exists {database_name}")
+        df.write.saveAsTable(target_table, mode = mode)
 
 
