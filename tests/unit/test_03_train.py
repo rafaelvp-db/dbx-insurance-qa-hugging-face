@@ -20,6 +20,7 @@ def test_training_job(spark: SparkSession, tmp_path: Path):
         },
         "num_workers": 10,
         "tracking_uri": "./mlruns",
+        "experiment_name": "/Shared/dbx/insuranceqa",
         "batch_size": 1
     }
 

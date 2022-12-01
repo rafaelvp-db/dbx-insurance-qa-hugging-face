@@ -6,7 +6,11 @@ rm:
 env:
 	pip install -e '.[local, test]'
 
+<<<<<<< HEAD
 unit: clean
+=======
+unit: rm
+>>>>>>> 934fadb (cleanup)
 	pytest tests/unit
 
 format:
@@ -15,7 +19,11 @@ format:
 lint:
 	flake8 insuranceqa
 
+<<<<<<< HEAD
 integration: clean
+=======
+integration: rm
+>>>>>>> 934fadb (cleanup)
 	pytest tests/integration
 
 ingest:
