@@ -9,9 +9,7 @@ from setuptools import find_packages, setup
 from insuranceqa import __version__
 
 PACKAGE_REQUIREMENTS = [
-    "pyyaml",
-    "transformers",
-    "pytorch_lightning==1.8.3.post1"
+    "pyyaml"
 ]
 
 # packages for local development and unit testing
@@ -47,6 +45,7 @@ setup(
         "console_scripts": [
             "ingest = insuranceqa.tasks.ingest:entrypoint",
             "clean = insuranceqa.tasks.clean:entrypoint",
+            "train = insuranceqa.tasks.train:entrypoint"
     ]},
     version=__version__,
     description="",

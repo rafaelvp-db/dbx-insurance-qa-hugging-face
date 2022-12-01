@@ -13,31 +13,6 @@ custom:
 environments:
   default:
     workflows:
-      #######################################################################################
-      #   Example workflow for integration tests                                            #
-      #######################################################################################
-      - name: "insuranceqa-tests"
-        tasks:
-          - task_key: "main"
-            <<: *basic-static-cluster
-            spark_python_task:
-                python_file: "file://tests/entrypoint.py"
-                # this call supports all standard pytest arguments
-                parameters: ["file:fuse://tests/integration", "--cov=insuranceqa"]
-      #######################################################################################
-      # this is an example job with single ETL task based on 2.1 API and wheel_task format #
-      ######################################################################################
-      - name: "insuranceqa-etl"
-        tasks:
-          - task_key: "main"
-            <<: *basic-static-cluster
-            python_wheel_task:
-              package_name: "insuranceqa"
-              entry_point: "etl" # take a look at the setup.py entry_points section for details on how to define an entrypoint
-              parameters: ["--conf-file", "file:fuse://conf/tasks/sample_etl_config.yml"]
-      #############################################################
-      # this is an example multitask job with notebook task       #
-      #############################################################
       - name: "insuranceqa-multitask"
         job_clusters:
           - job_cluster_key: "default"
@@ -45,8 +20,9 @@ environments:
         tasks:
           - task_key: "ingest"
             job_cluster_key: "default"
-            spark_python_task:
-              python_file: "file://insuranceqa/tasks/ingest.py"
+            python_wheel_task:
+              package_name: "insuranceqa"
+              entry_point: "ingest"
               parameters: [ "--conf-file", "file:fuse://conf/tasks/ingest.yml" ]
           - task_key: "clean"
             depends_on:
@@ -56,4 +32,12 @@ environments:
               package_name: "insuranceqa"
               entry_point: "clean"
               parameters: [ "--conf-file", "file:fuse://conf/tasks/clean.yml" ]
+          - task_key: "train"
+            depends_on:
+              - task_key: "clean"
+            job_cluster_key: "default"
+            python_wheel_task:
+              package_name: "insuranceqa"
+              entry_point: "train"
+              parameters: [ "--conf-file", "file:fuse://conf/tasks/train.yml" ]
 

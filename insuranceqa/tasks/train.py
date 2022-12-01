@@ -18,52 +18,27 @@ class TrainTask(Task):
         num_workers = self.conf["num_workers"]
         batch_size = self.conf["batch_size"]
 
-        train_data = InsuranceDataset(
-            spark = self.spark,
-            split = train_split
-        )
+        train_data = InsuranceDataset(spark=self.spark, split=train_split)
 
-        valid_data = InsuranceDataset(
-            spark = self.spark,
-            split = valid_split
-        )
+        valid_data = InsuranceDataset(spark=self.spark, split=valid_split)
 
-        test_data = InsuranceDataset(
-            spark = self.spark,
-            split = test_split
-        )
+        test_data = InsuranceDataset(spark=self.spark, split=test_split)
 
-        train_dataloader = DataLoader(
-            train_data,
-            batch_size=batch_size,
-            shuffle=True,
-            num_workers=num_workers
-        )
+        train_dataloader = DataLoader(train_data, batch_size=batch_size, shuffle=True, num_workers=num_workers)
 
-        valid_dataloader = DataLoader(
-            valid_data,
-            batch_size=batch_size,
-            shuffle=False,
-            num_workers=num_workers
-        )
+        valid_dataloader = DataLoader(valid_data, batch_size=batch_size, shuffle=False, num_workers=num_workers)
 
         return train_dataloader, valid_dataloader
 
     def _train(self):
         train_dataloader, valid_dataloader = self._get_data_loaders()
         lit_model = LitModel()
-        
+
         max_epochs = self.conf.get("max_epochs", None)
         max_steps = self.conf.get("max_steps", None)
         if not max_steps:
             early_stop_callbacks = [
-                EarlyStopping(
-                    monitor="val_loss",
-                    min_delta=0.001,
-                    patience=3,
-                    verbose=True,
-                    mode="min"
-                )
+                EarlyStopping(monitor="val_loss", min_delta=0.001, patience=3, verbose=True, mode="min")
             ]
         else:
             early_stop_callbacks = None
@@ -71,57 +46,44 @@ class TrainTask(Task):
         accelerator = self.conf["accelerator"]
         devices = self.conf["devices"]
 
-        with mlflow.start_run(run_name = "torch") as run:
-        
+        with mlflow.start_run(run_name="torch") as run:
+
             lit_model = LitModel()
             run_id = run.info.run_id
             experiment_name = mlflow.get_experiment(run.info.experiment_id)
 
-            mlf_logger = MLFlowLogger(
-                experiment_name = experiment_name,
-                run_id=run_id,
-                tracking_uri=tracking_uri
-            )
+            mlf_logger = MLFlowLogger(experiment_name=experiment_name, run_id=run_id, tracking_uri=tracking_uri)
 
             trainer = pl.Trainer(
-                max_epochs = max_epochs,
-                max_steps = max_steps,
-                logger = mlf_logger,
-                accelerator = accelerator,
-                devices = devices,
-                callbacks = early_stop_callbacks
+                max_epochs=max_epochs,
+                max_steps=max_steps,
+                logger=mlf_logger,
+                accelerator=accelerator,
+                devices=devices,
+                callbacks=early_stop_callbacks,
             )
 
-            trainer.fit(
-                lit_model,
-                train_dataloaders = train_dataloader,
-                val_dataloaders = valid_dataloader
-            )
+            trainer.fit(lit_model, train_dataloaders=train_dataloader, val_dataloaders=valid_dataloader)
 
             logging.info("Logging and registering model")
-            model_info = mlflow.pytorch.log_model(
-                lit_model,
-                artifact_path = "model"
-            )
+            model_info = mlflow.pytorch.log_model(lit_model, artifact_path="model")
 
             if tracking_uri == "databricks":
-                model_version = mlflow.register_model(
-                    model_uri = model_info.model_uri,
-                    name = "distilbert_insuranceqa"
-                )
+                model_version = mlflow.register_model(model_uri=model_info.model_uri, name="distilbert_insuranceqa")
                 logging.info(f"Registered Model Version: {model_version}")
-
 
     def launch(self):
         self.logger.info("Launching ML training task")
         self._train()
         self.logger.info("ML training task finished!")
 
+
 # if you're using python_wheel_task, you'll need the entrypoint function to be used in setup.py
 def entrypoint():  # pragma: no cover
     task = TrainTask()
     task.launch()
 
+
 # if you're using spark_python_task, you'll need the __main__ block to start the code execution
-if __name__ == '__main__':
+if __name__ == "__main__":
     entrypoint()

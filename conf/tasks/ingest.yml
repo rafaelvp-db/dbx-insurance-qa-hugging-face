@@ -1,2 +1,4 @@
+input:
+  root_path: "file://"
 output:
   database: "insuranceqa"
