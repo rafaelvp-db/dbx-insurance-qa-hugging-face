@@ -38,34 +38,22 @@ environments:
       #############################################################
       # this is an example multitask job with notebook task       #
       #############################################################
-      - name: "insuranceqa-sample-multitask"
+      - name: "insuranceqa-multitask"
         job_clusters:
           - job_cluster_key: "default"
             <<: *basic-static-cluster
         tasks:
-          - task_key: "etl"
+          - task_key: "ingest"
             job_cluster_key: "default"
             spark_python_task:
-              python_file: "file://insuranceqa/tasks/sample_etl_task.py"
-              parameters: [ "--conf-file", "file:fuse://conf/tasks/sample_etl_config.yml" ]
-          - task_key: "ml"
+              python_file: "file://insuranceqa/tasks/ingest.py"
+              parameters: [ "--conf-file", "file:fuse://conf/tasks/ingest.yml" ]
+          - task_key: "clean"
             depends_on:
-              - task_key: "etl"
+              - task_key: "ingest"
             job_cluster_key: "default"
             python_wheel_task:
               package_name: "insuranceqa"
-              entry_point: "ml"
-              parameters: [ "--conf-file", "file:fuse://conf/tasks/sample_ml_config.yml" ]
-          ###############################################################################
-          # this is an example task based on the notebook                               #
-          # Please note that first you'll need to add a Repo and commit notebook to it. #
-          ###############################################################################
-          - task_key: "notebook"
-            deployment_config:
-              no_package: true # we omit using package since code will be shipped directly from the Repo
-            depends_on:
-              - task_key: "ml"
-            job_cluster_key: "default"
-            notebook_task:
-              notebook_path: "/Repos/Staging/insuranceqa/notebooks/sample_notebook"
+              entry_point: "clean"
+              parameters: [ "--conf-file", "file:fuse://conf/tasks/clean.yml" ]
 
