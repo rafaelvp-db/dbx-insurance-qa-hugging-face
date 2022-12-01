@@ -2,3 +2,4 @@
 .egg
 .pyc
 __pycache__
+.venv

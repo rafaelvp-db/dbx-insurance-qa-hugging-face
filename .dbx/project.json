@@ -1,0 +1,14 @@
+{
+    "environments": {
+        "default": {
+            "profile": "DEFAULT",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/dbx/insuranceqa",
+                "artifact_location": "dbfs:/Shared/dbx/projects/insuranceqa"
+            }
+        }
+    },
+    "inplace_jinja_support": false,
+    "failsafe_cluster_reuse_with_assets": false
+}
