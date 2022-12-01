@@ -1,0 +1,5 @@
+filter: "length < 50"
+input:
+  database: "insuranceqa"
+output:
+  suffix: "silver"

@@ -45,8 +45,8 @@ setup(
     extras_require={"local": LOCAL_REQUIREMENTS, "test": TEST_REQUIREMENTS},
     entry_points = {
         "console_scripts": [
-            "etl = insuranceqa.tasks.sample_etl_task:entrypoint",
-            "ml = insuranceqa.tasks.sample_ml_task:entrypoint",
+            "ingest = insuranceqa.tasks.ingest:entrypoint",
+            "clean = insuranceqa.tasks.clean:entrypoint",
     ]},
     version=__version__,
     description="",

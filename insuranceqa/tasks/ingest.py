@@ -1,24 +1,27 @@
 from insuranceqa.common import Task
+from insuranceqa.data.ingest import InsuranceQA
 
 
-class IngestDataTask(Task):
+class IngestionTask(Task):
     def _write_data(self):
-        db = self.conf["output"].get("database", "default")
-        table = self.conf["output"]["table"]
-        self.logger.info(f"Writing insuranceqa dataset to {db}.{table}")
-        _data: pd.DataFrame = fetch_california_housing(as_frame=True).frame
-        df = self.spark.createDataFrame(_data)
-        df.write.format("delta").mode("overwrite").saveAsTable(f"{db}.{table}")
-        self.logger.info("Dataset successfully written")
+        ds = InsuranceQA(self.spark)
+        db = self.conf["output"].get("database", "insuranceqa")
+        self.logger.info(f"Writing insuranceqa dataset to {db}")
+        for split in ["train", "valid", "test"]:
+            ds.ingest(
+                database_name = db,
+                split = split
+            )
+        self.logger.info("Dataset successfully ingested and written")
 
     def launch(self):
-        self.logger.info("Launching sample ETL task")
+        self.logger.info("Launching ingestion task")
         self._write_data()
-        self.logger.info("Sample ETL task finished!")
+        self.logger.info("Ingestion task finished!")
 
 # if you're using python_wheel_task, you'll need the entrypoint function to be used in setup.py
 def entrypoint():  # pragma: no cover
-    task = SampleETLTask()
+    task = IngestionTask()
     task.launch()
 
 # if you're using spark_python_task, you'll need the __main__ block to start the code execution
