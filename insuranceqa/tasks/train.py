@@ -19,13 +19,9 @@ class TrainTask(Task):
         batch_size = self.conf["batch_size"]
 
         train_data = InsuranceDataset(spark=self.spark, split=train_split)
-
         valid_data = InsuranceDataset(spark=self.spark, split=valid_split)
 
-        test_data = InsuranceDataset(spark=self.spark, split=test_split)
-
         train_dataloader = DataLoader(train_data, batch_size=batch_size, shuffle=True, num_workers=num_workers)
-
         valid_dataloader = DataLoader(valid_data, batch_size=batch_size, shuffle=False, num_workers=num_workers)
 
         return train_dataloader, valid_dataloader
@@ -42,18 +38,20 @@ class TrainTask(Task):
             ]
         else:
             early_stop_callbacks = None
-        tracking_uri = self.conf["tracking_uri"]
-        accelerator = self.conf["accelerator"]
-        devices = self.conf["devices"]
-
+        tracking_uri = self.conf.get("tracking_uri", "databricks")
+        accelerator = self.conf.get("accelerator", "cpu")
+        devices = self.conf.get("devices", None)
+        experiment_name = self.conf["experiment_name"]
+        mlflow.set_experiment(experiment_name)
         with mlflow.start_run(run_name="torch") as run:
 
             lit_model = LitModel()
             run_id = run.info.run_id
-            experiment_name = mlflow.get_experiment(run.info.experiment_id)
-
-            mlf_logger = MLFlowLogger(experiment_name=experiment_name, run_id=run_id, tracking_uri=tracking_uri)
-
+            mlf_logger = MLFlowLogger(
+                experiment_name=experiment_name,
+                run_id=run_id,
+                tracking_uri=tracking_uri
+            )
             trainer = pl.Trainer(
                 max_epochs=max_epochs,
                 max_steps=max_steps,

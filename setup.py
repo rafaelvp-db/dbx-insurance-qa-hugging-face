@@ -9,7 +9,10 @@ from setuptools import find_packages, setup
 from insuranceqa import __version__
 
 PACKAGE_REQUIREMENTS = [
-    "pyyaml"
+    "pyyaml",
+    "torch==1.13.0",
+    "pytorch-lightning==1.8.3.post1",
+    "transformers==4.24.0"
 ]
 
 # packages for local development and unit testing
