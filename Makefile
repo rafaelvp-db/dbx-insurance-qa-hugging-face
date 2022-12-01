@@ -1,4 +1,4 @@
-clean:
+rm:
 	rm -rf spark-warehouse && \
 	rm -rf mlruns && \
 	rm -rf 0
@@ -20,4 +20,6 @@ integration: clean
 
 ingest:
 	dbx execute --cluster-id=1021-161236-mcec790m insuranceqa-multitask --task ingest
-	
+
+clean:
+	dbx execute --cluster-id=1021-161236-mcec790m insuranceqa-multitask --task clean
