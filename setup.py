@@ -8,16 +8,23 @@ Please follow the `entry_points` documentation for more details on how to config
 from setuptools import find_packages, setup
 from insuranceqa import __version__
 
-PACKAGE_REQUIREMENTS = ["pyyaml"]
+PACKAGE_REQUIREMENTS = [
+    "pyyaml",
+    "transformers",
+    "pytorch_lightning==1.8.3.post1"
+]
 
 # packages for local development and unit testing
 # please note that these packages are already available in DBR, there is no need to install them on DBR.
 LOCAL_REQUIREMENTS = [
     "pyspark==3.2.1",
     "delta-spark==1.1.0",
+    "transformers",
+    "torch",
+    "pytorch_lightning",
     "scikit-learn",
     "pandas",
-    "mlflow",
+    "mlflow"
 ]
 
 TEST_REQUIREMENTS = [
@@ -25,7 +32,9 @@ TEST_REQUIREMENTS = [
     "pytest",
     "coverage[toml]",
     "pytest-cov",
-    "dbx>=0.7,<0.8"
+    "dbx>=0.7,<0.8",
+    "flake8",
+    "black"
 ]
 
 setup(
@@ -41,5 +50,5 @@ setup(
     ]},
     version=__version__,
     description="",
-    author="",
+    author="https://www.github.com/rafaelvp-db",
 )
