@@ -10,3 +10,10 @@
 * Creating custom [PyTorch Lightning](https://www.pytorchlightning.ai/) `DataModule` and `LightningModule` to wrap, respectively, our dataset and our backbone model (`distilbert_en_uncased`)
 * Training with multiple GPUs while logging desired metrics into MLflow and registering model assets into Databricks Model Registry
 * Running inference both with single and multiple nodes
+
+
+## Additional Reference
+
+1. Minwei Feng, Bing Xiang, Michael R. Glass, Lidan Wang, Bowen Zhou. [Applying Deep Learning to Answer Selection: A Study and An Open Task](https://arxiv.org/abs/1508.01585)
+2. [Fine-tune Transformers Models with PyTorch Lightning](https://pytorch-lightning.readthedocs.io/en/stable/notebooks/lightning_examples/text-transformers.html)
+3. [PyTorch Lightning MLflow Logger](https://pytorch-lightning.readthedocs.io/en/stable/api/pytorch_lightning.loggers.mlflow.html)
