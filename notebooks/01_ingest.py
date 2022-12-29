@@ -67,7 +67,13 @@ pipeline(f"{dbfs_path.replace('/dbfs', '')}/valid.questions.txt", "insuranceqa.v
 
 # MAGIC %sql
 # MAGIC 
-# MAGIC select * from insuranceqa.train limit 10
+# MAGIC select * from insuranceqa.train limit 20
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 
+# MAGIC * Discuss possibilities around mapping topics to answers
 
 # COMMAND ----------
 

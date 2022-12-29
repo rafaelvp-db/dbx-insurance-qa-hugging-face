@@ -50,6 +50,8 @@ model
 # MAGIC * Our model must have 12 different labels; we need to customize `DistilBERT` to support that
 # MAGIC * But first, we need to have a Torch `Dataset` and a `DataLoader`. Let's code that up
 # MAGIC * We will do this in a way that we directly query data that is stored in a Delta table
+# MAGIC 
+# MAGIC * We show you how to bootstrap your own intent classification model. You use a pretrained model and apply transfer learning. You can use the same code to train your own model and make it more detailed or less detailed as you wish
 
 # COMMAND ----------
 

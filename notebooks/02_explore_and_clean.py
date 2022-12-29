@@ -70,4 +70,10 @@ for table in ["insuranceqa.train", "insuranceqa.test", "insuranceqa.valid"]:
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC 
+# MAGIC select distinct(topic_en) from insuranceqa.train
+
+# COMMAND ----------
+
 
