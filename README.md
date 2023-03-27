@@ -1,5 +1,7 @@
 # Insurance Q&A Intent Classification with Databricks & Hugging Face
 
+## This repo has been deprecated. Please refer to [this one](https://github.com/rafaelvp-db/databricks-insurance-qa-nlp)
+
 <img src="https://github.com/rafaelvp-db/dbx-insurance-qa-hugging-face/blob/master/img/header.png?raw=true" />
 
 <hr />
